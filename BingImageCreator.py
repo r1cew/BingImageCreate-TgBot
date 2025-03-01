@@ -50,7 +50,7 @@ class AsyncImageGen:
         url = f"{BING_URL}/images/create?q={url_encoded_prompt}&rt=4&FORM=GENCRE"
         timeout = aiohttp.ClientTimeout(total=200)
         try:
-            async with self.session.post(url, allow_redirects=False, data=payload, timeout=timeout) as response:
+            async with self.session.post(url, allow_redirects=True, data=payload, timeout=timeout) as response:
                 response_text = await response.text()
         except Exception as e:
             if status_callback:
@@ -73,7 +73,7 @@ class AsyncImageGen:
         if response.status != 302:
             # Если rt4 не сработал, пробуем rt3
             url = f"{BING_URL}/images/create?q={url_encoded_prompt}&rt=3&FORM=GENCRE"
-            async with self.session.post(url, allow_redirects=False, timeout=timeout) as response:
+            async with self.session.post(url, allow_redirects=True, timeout=timeout) as response:
                 response_text = await response.text()
             if response.status != 302:
                 if status_callback:
